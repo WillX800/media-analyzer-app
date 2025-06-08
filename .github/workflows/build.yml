@@ -1,0 +1,47 @@
+name: Build macOS App
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  build-macos:
+    runs-on: macos-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+    
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install pyinstaller pymediainfo
+    
+    - name: Download MediaInfo for macOS
+      run: |
+        curl -L -o MediaInfo.dmg https://mediaarea.net/download/binary/mediainfo/23.10/MediaInfo_CLI_23.10_Mac.dmg
+        hdiutil attach MediaInfo.dmg
+        cp "/Volumes/MediaInfo CLI 23.10/MediaInfo" ./mediainfo
+        hdiutil detach "/Volumes/MediaInfo CLI 23.10"
+        chmod +x ./mediainfo
+    
+    - name: Build with PyInstaller
+      run: |
+        python -m PyInstaller --onefile --windowed \
+          --name="百度素材初审器" \
+          --icon=app_icon.ico \
+          --add-data="mediainfo:mediainfo" \
+          media_analyzer_app.py
+    
+    - name: Upload macOS App
+      uses: actions/upload-artifact@v4
+      with:
+        name: 百度素材初审器-macOS
+        path: dist/百度素材初审器
