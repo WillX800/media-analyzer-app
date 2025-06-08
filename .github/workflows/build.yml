@@ -24,12 +24,16 @@ jobs:
         python -m pip install --upgrade pip
         pip install pyinstaller pymediainfo
     
-    - name: Download MediaInfo for macOS
+    - name: Download and setup MediaInfo for macOS
       run: |
         curl -L -o MediaInfo.dmg https://mediaarea.net/download/binary/mediainfo/23.10/MediaInfo_CLI_23.10_Mac.dmg
         hdiutil attach MediaInfo.dmg
-        cp "/Volumes/MediaInfo CLI 23.10/MediaInfo" ./mediainfo
-        hdiutil detach "/Volumes/MediaInfo CLI 23.10"
+        # List contents to see the actual structure
+        ls -la /Volumes/
+        ls -la /Volumes/MediaInfo/
+        # Copy the MediaInfo binary (adjust path based on actual structure)
+        cp "/Volumes/MediaInfo/MediaInfo" ./mediainfo
+        hdiutil detach "/Volumes/MediaInfo"
         chmod +x ./mediainfo
     
     - name: Build with PyInstaller
