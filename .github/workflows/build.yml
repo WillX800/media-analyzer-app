@@ -28,12 +28,12 @@ jobs:
       run: |
         curl -L -o MediaInfo.dmg https://mediaarea.net/download/binary/mediainfo/23.10/MediaInfo_CLI_23.10_Mac.dmg
         hdiutil attach MediaInfo.dmg
-        # List contents to see the actual structure
-        ls -la /Volumes/
-        ls -la /Volumes/MediaInfo/
-        # Copy the MediaInfo binary (adjust path based on actual structure)
-        cp "/Volumes/MediaInfo/MediaInfo" ./mediainfo
+        # Install the MediaInfo package
+        sudo installer -pkg "/Volumes/MediaInfo/mediainfo.pkg" -target /
         hdiutil detach "/Volumes/MediaInfo"
+        # The mediainfo binary should now be available in /usr/local/bin/
+        # Copy it to our project directory
+        cp /usr/local/bin/mediainfo ./mediainfo
         chmod +x ./mediainfo
     
     - name: Build with PyInstaller
