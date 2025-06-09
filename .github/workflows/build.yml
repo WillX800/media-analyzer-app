@@ -22,7 +22,7 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install pyinstaller pymediainfo
+        pip install pyinstaller pymediainfo pillow
     
     - name: Download and setup MediaInfo for macOS
       run: |
@@ -38,7 +38,7 @@ jobs:
     
     - name: Build with PyInstaller
       run: |
-        python -m PyInstaller --onefile --windowed \
+        python -m PyInstaller --onedir --windowed \
           --name="百度素材初审器" \
           --icon=app_icon.ico \
           --add-data="mediainfo:mediainfo" \
@@ -48,4 +48,4 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: 百度素材初审器-macOS
-        path: dist/百度素材初审器
+        path: dist/百度素材初审器.app
