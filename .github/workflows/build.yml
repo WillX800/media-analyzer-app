@@ -47,5 +47,46 @@ jobs:
     - name: Upload macOS App
       uses: actions/upload-artifact@v4
       with:
-        name: 百度素材初审器-macOS
+        name: BaiduMediaAnalyzer-macOS
         path: dist/百度素材初审器.app
+
+    ## 如何下载macOS应用包
+
+    1. **从GitHub Actions下载**：
+       - 进入你的GitHub仓库页面
+       - 点击顶部的 "Actions" 标签
+       - 找到最新的成功构建（绿色勾号）
+       - 点击进入该构建详情页面
+       - 在页面底部的 "Artifacts" 部分，你会看到 "百度素材初审器-macOS"
+       - 点击下载，会得到一个zip文件
+       - 解压后就是 "百度素材初审器.app" 应用包
+    
+    ## 没有macOS环境如何测试
+    
+    由于你没有macOS环境，有以下几种测试方案：
+    
+    ### 1. 虚拟机方案
+    - 使用VMware或VirtualBox安装macOS虚拟机
+    - 在虚拟机中测试应用
+    - **注意**：这可能违反Apple的许可协议，仅供开发测试用途
+    
+    ### 2. 云端macOS服务
+    - 使用MacStadium、AWS EC2 Mac实例等云服务
+    - 租用macOS环境进行测试
+    - 成本较高但合法合规
+    
+    ### 3. 请朋友帮忙测试
+    - 找有Mac电脑的朋友帮忙测试
+    - 发送应用包给他们，让他们反馈使用情况
+    
+    ### 4. GitHub Actions自动化测试
+    可以在GitHub Actions中添加基本的功能测试：
+    
+    - name: Test macOS App (Basic)
+      run: |
+        # 检查应用包是否正确生成
+        ls -la dist/
+        # 检查应用包结构
+        ls -la "dist/百度素材初审器.app/Contents/"
+        # 尝试运行应用（无GUI模式下的基本检查）
+        # 注意：这只能做基本检查，不能测试GUI功能
